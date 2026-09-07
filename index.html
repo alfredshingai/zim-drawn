@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zimbabwe, Drawn by Hand — Sketchbook Tour</title>
+<meta name="description" content="The pencil draws the exact real photos of Zimbabwe's top sites, stroke by stroke, played chronologically one at a time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
+</head>
+<body data-mode="trace">
+<div class="paper-grain" aria-hidden="true"></div>
+<div id="pencil" aria-hidden="true">✏️</div>
+
+<header class="hero">
+  <p class="eyebrow">✎ now the pencil draws the exact photos</p>
+  <h1 class="hand-title">Zimbabwe, <span class="underline-sketch">drawn by hand</span></h1>
+  <p class="subtitle">Six real photos. The pencil <strong>sketches each exact photo</strong> tile by tile — shading, edges and all — then colours it in. Played <strong>one at a time, oldest story first</strong>.</p>
+  <div class="controls">
+    <button id="playChrono" class="btn primary">▶ Play chronologically</button>
+    <button id="tourBtn" class="btn">Browse all</button>
+    <label class="speed">✎ speed
+      <input id="speed" type="range" min="0.5" max="2.5" step="0.1" value="1">
+      <span id="speedVal">1×</span>
+    </label>
+  </div>
+  <div class="mode-row" role="group" aria-label="Photo mode">
+    <span class="mode-label">Finish:</span>
+    <button class="mode-btn active" data-mode-btn="trace">Sketch + colour <small>draw exact photo, then colour it</small></button>
+    <button class="mode-btn" data-mode-btn="reveal">Sketch only <small>pencil drawing, no colour</small></button>
+    <button class="mode-btn" data-mode-btn="sketch">Photo only <small>skip drawing, show photo</small></button>
+  </div>
+  <div class="tour-bar"><div id="tourProgress"></div></div>
+  <p id="tourLabel" class="tour-label">Press Play — Ch.1 Matobo draws first. Or scroll to browse. Click any picture to watch the pencil draw it.</p>
+  <p class="chrono-note">Chronology: ① Matobo rock art (~2,000 yrs) → ② Great Zimbabwe (1100s) → ③ Vic Falls (1855) → ④ Hwange (1928) → ⑤ Chinhoyi (1955) → ⑥ Mana Pools (1984 UNESCO)</p>
+</header>
+
+<main class="grid" id="grid">
+
+  <article class="card" data-site="matobo" id="card-matobo" data-chapter="1" data-era="Stone Age · rock art ~2,000 yrs ago">
+    <div class="card-head">
+      <span class="num">①</span>
+      <div><h2>Matobo Hills</h2><p class="local">Matobo — “Bald Heads” · Ch.1 oldest</p></div>
+      <span class="badge">Rocks</span>
+    </div>
+    <div class="sketch-wrap" data-photo="images/matobo.jpg">
+      <img class="photo" crossorigin="anonymous" loading="lazy" alt="Real photo of Matobo Hills sunrise" src="images/matobo.jpg">
+      <canvas class="draw" aria-label="Pencil drawing the exact Matobo photo"></canvas>
+      <button class="replay" data-replay="card-matobo" aria-label="Replay Matobo">↻</button>
+      <div class="pct"><span>blank paper</span></div>
+    </div>
+    <p class="photo-credit">📷 exact photo: Wikimedia Commons · Matobo sunrise · <span>pencil draws this very image</span></p>
+    <p class="desc">Granite kopjes stacked like a giant played marbles. Balancing rocks, rhinos, and 2,000-year-old San rock art — the oldest story.</p>
+    <div class="facts"><span>📍 Near Bulawayo</span><span>⭐ UNESCO site</span><span>🕒 Best: May–Sep</span></div>
+  </article>
+
+  <article class="card" data-site="greatzim" id="card-greatzim" data-chapter="2" data-era="Kingdom era · 1100s–1400s">
+    <div class="card-head">
+      <span class="num">②</span>
+      <div><h2>Great Zimbabwe</h2><p class="local">Dzimba-dze-Mabwe · Ch.2 kingdom</p></div>
+      <span class="badge">History</span>
+    </div>
+    <div class="sketch-wrap" data-photo="images/greatzim.jpg">
+      <img class="photo" crossorigin="anonymous" loading="lazy" alt="Real photo of Great Zimbabwe wall" src="images/greatzim.jpg">
+      <canvas class="draw" aria-label="Pencil drawing the exact Great Zimbabwe photo"></canvas>
+      <button class="replay" data-replay="card-greatzim" aria-label="Replay Great Zimbabwe">↻</button>
+      <div class="pct"><span>blank paper</span></div>
+    </div>
+    <p class="photo-credit">📷 exact photo: Wikimedia Commons · Great Enclosure wall · <span>pencil draws this very image</span></p>
+    <p class="desc">Medieval walled city, built without mortar. The Great Enclosure + conical tower — the stone bird found here is on the flag.</p>
+    <div class="facts"><span>📍 Masvingo</span><span>⭐ 11th–15th c.</span><span>🕒 Best: Apr–Oct</span></div>
+  </article>
+
+  <article class="card" data-site="vicfalls" id="card-vicfalls" data-chapter="3" data-era="1855 · Livingstone naming">
+    <div class="card-head">
+      <span class="num">③</span>
+      <div><h2>Victoria Falls</h2><p class="local">Mosi-oa-Tunya · Ch.3 the Smoke</p></div>
+      <span class="badge">Waterfall</span>
+    </div>
+    <div class="sketch-wrap" data-photo="images/vicfalls.jpg">
+      <img class="photo" crossorigin="anonymous" loading="lazy" alt="Real photo of Victoria Falls" src="images/vicfalls.jpg">
+      <canvas class="draw" aria-label="Pencil drawing the exact Victoria Falls photo"></canvas>
+      <button class="replay" data-replay="card-vicfalls" aria-label="Replay Victoria Falls">↻</button>
+      <div class="pct"><span>blank paper</span></div>
+    </div>
+    <p class="photo-credit">📷 exact photo: Anne Dirkse, Wikimedia Commons CC BY-SA · <span>pencil draws this very image</span></p>
+    <p class="desc">1.7km of curtain water dropping 108m into the Batoka Gorge. You hear it before you see it — then the spray soaks your sketchbook.</p>
+    <div class="facts"><span>📍 NW Zimbabwe</span><span>⭐ 108m drop</span><span>🕒 Best: Feb–May</span></div>
+  </article>
+
+  <article class="card" data-site="hwange" id="card-hwange" data-chapter="4" data-era="1928 · park founded">
+    <div class="card-head">
+      <span class="num">④</span>
+      <div><h2>Hwange Park</h2><p class="local">Elephant country · Ch.4 safari</p></div>
+      <span class="badge">Safari</span>
+    </div>
+    <div class="sketch-wrap" data-photo="images/hwange.jpg">
+      <img class="photo" crossorigin="anonymous" loading="lazy" alt="Real photo of African bush elephant" src="images/hwange.jpg">
+      <canvas class="draw" aria-label="Pencil drawing the exact elephant photo"></canvas>
+      <button class="replay" data-replay="card-hwange" aria-label="Replay Hwange">↻</button>
+      <div class="pct"><span>blank paper</span></div>
+    </div>
+    <p class="photo-credit">📷 exact photo: Wikimedia Commons · bush elephant · <span>pencil draws this very image</span></p>
+    <p class="desc">Zimbabwe’s biggest park — 14,600 km². One of Africa’s largest elephant herds + lions, wild dogs and 400+ birds.</p>
+    <div class="facts"><span>📍 Mat North</span><span>⭐ ~45k elephants</span><span>🕒 Best: Aug–Oct</span></div>
+  </article>
+
+  <article class="card" data-site="chinhoyi" id="card-chinhoyi" data-chapter="5" data-era="1955 · national park">
+    <div class="card-head">
+      <span class="num">⑤</span>
+      <div><h2>Chinhoyi Caves</h2><p class="local">Chirorodziva · Ch.5 blue pool</p></div>
+      <span class="badge">Caves</span>
+    </div>
+    <div class="sketch-wrap" data-photo="images/chinhoyi.jpg">
+      <img class="photo" crossorigin="anonymous" loading="lazy" alt="Real photo of Chinhoyi Caves" src="images/chinhoyi.jpg">
+      <canvas class="draw" aria-label="Pencil drawing the exact Chinhoyi photo"></canvas>
+      <button class="replay" data-replay="card-chinhoyi" aria-label="Replay Chinhoyi">↻</button>
+      <div class="pct"><span>blank paper</span></div>
+    </div>
+    <p class="photo-credit">📷 exact photo: Wikimedia Commons · Chinhoyi caves · <span>pencil draws this very image</span></p>
+    <p class="desc">Limestone caverns dropping to a cobalt-blue sleeping pool. The water is so clear divers disappear into the blue.</p>
+    <div class="facts"><span>📍 Mash West</span><span>⭐ 92m deep pool</span><span>🕒 Best: year-round</span></div>
+  </article>
+
+  <article class="card" data-site="mana" id="card-mana" data-chapter="6" data-era="1984 · UNESCO listed">
+    <div class="card-head">
+      <span class="num">⑥</span>
+      <div><h2>Mana Pools</h2><p class="local">Zambezi — “Four Pools” · Ch.6 finale</p></div>
+      <span class="badge">River</span>
+    </div>
+    <div class="sketch-wrap" data-photo="images/mana.jpg">
+      <img class="photo" crossorigin="anonymous" loading="lazy" alt="Real photo of Zambezi island at Mana Pools" src="images/mana.jpg">
+      <canvas class="draw" aria-label="Pencil drawing the exact Mana Pools photo"></canvas>
+      <button class="replay" data-replay="card-mana" aria-label="Replay Mana Pools">↻</button>
+      <div class="pct"><span>blank paper</span></div>
+    </div>
+    <p class="photo-credit">📷 exact photo: Wikimedia Commons · Zambezi island, Mana Pools · <span>pencil draws this very image</span></p>
+    <p class="desc">Walk or canoe past elephants, hippos and painted dogs along the Zambezi. Africa’s wildest UNESCO riverfront — our finale.</p>
+    <div class="facts"><span>📍 Lower Zambezi</span><span>⭐ UNESCO 1984</span><span>🕒 Best: Jun–Oct</span></div>
+  </article>
+
+</main>
+
+<div id="theater" class="theater" aria-hidden="true" role="dialog" aria-label="Chronological sketch player">
+  <div class="theater-card">
+    <div class="theater-top">
+      <span id="thChapter">Ch.1 / 6</span>
+      <span id="thEra">Stone Age</span>
+      <button id="thClose" aria-label="Close player">✕</button>
+    </div>
+    <h2 id="thTitle">Matobo Hills</h2>
+    <p id="thSub" class="local"></p>
+    <div class="theater-stage sketch-wrap" id="thWrap" data-photo="">
+      <img id="thPhoto" class="photo" crossorigin="anonymous" alt="">
+      <canvas id="thCanvas" class="draw"></canvas>
+      <div id="thPct">blank paper</div>
+    </div>
+    <p id="thDesc" class="desc"></p>
+    <div class="theater-controls">
+      <button id="thPrev" class="btn">‹ Prev</button>
+      <button id="thPlay" class="btn primary">⏸ Pause</button>
+      <button id="thNext" class="btn">Next ›</button>
+    </div>
+    <div class="theater-dots" id="thDots"></div>
+    <p class="theater-hint">One exact photo at a time · pencil sketches it, then colours it in</p>
+  </div>
+</div>
+
+<section class="outro">
+  <h2 class="hand">Your turn — pick a favourite?</h2>
+  <div class="vote-row" id="voteRow">
+    <button data-vote="matobo">Matobo</button>
+    <button data-vote="greatzim">Great Zim</button>
+    <button data-vote="vicfalls">Victoria Falls</button>
+    <button data-vote="hwange">Hwange</button>
+    <button data-vote="chinhoyi">Chinhoyi</button>
+    <button data-vote="mana">Mana Pools</button>
+  </div>
+  <p id="voteMsg" class="vote-msg">Votes are counted in your browser (localStorage) — no server, just vibes.</p>
+  <footer>Photos: Wikimedia Commons (see credits per picture, CC / CC BY-SA). The pencil renders each exact photo as a pencil sketch in your browser, stroke by stroke — no tracing shortcuts.<br>Made with a pencil in Zimbabwe 🇿🇼 — <kbd>P</kbd> play chronologically · <kbd>Esc</kbd> close player.</footer>
+</section>
+
+<script src="app.js?v=4"></script></script>
+</body>
+</html>
