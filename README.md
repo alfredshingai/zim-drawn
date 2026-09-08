@@ -4,7 +4,7 @@ A sketchbook tour of Zimbabwe — **only pencil sketches are ever shown**. A rea
 
 Sites (chronological): ① Matobo Hills (rock art ~2,000 yrs) · ② Great Zimbabwe (1100s) · ③ Victoria Falls (1855) · ④ Hwange (1928) · ⑤ Chinhoyi Caves (1955) · ⑥ Mana Pools (1984 UNESCO).
 
-Live: `https://zim-drawn.vercel.app` (Vercel) or `https://alfredshingai.github.io/zim-drawn/` (GitHub Pages). Analytics: Vercel Web Analytics at `/ _vercel/insights/script.js` (enable in Vercel Dashboard → Analytics).
+Live: `https://zim-drawn.vercel.app` (Vercel). Analytics: Vercel Web Analytics at `/_vercel/insights/script.js` (enable in Vercel Dashboard → Analytics).
 
 ## Run
 
@@ -40,8 +40,7 @@ All sketches are generated client-side; sources stay hidden (`canvas.draw` is th
 
 ## Deploy
 
-- **Vercel**: `vercel.json` (cleanUrls, immutable images). Connect GitHub repo → auto-deploy on push to `main`. Enable Web Analytics: Dashboard → Analytics → Enable → redeploy; check Network tab for `/_vercel/insights/view`.
-- **GitHub Pages**: `.github/workflows/pages.yml` deploys `main` to Pages on push.
+- **Vercel only**: `vercel.json` (cleanUrls, immutable images). Connect GitHub repo `alfredshingai/zim-drawn` → auto-deploy on push to `main`. Enable Web Analytics: Dashboard → https://vercel.com/alfredo1805/zim-drawn/analytics → Enable → redeploy; verify Network tab shows `/_vercel/insights/view`.
 
 ## UX notes
 
