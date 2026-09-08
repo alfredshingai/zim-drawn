@@ -1,4 +1,4 @@
-// Zimbabwe, Drawn by Hand v3 — pencil draws the EXACT photo (canvas tile reveal)
+// Zimbabwe, Drawn by Hand — sketch-only: pencil draws real map + photos, sketch is all you see
 const W = 480, H = 360, COLS = 60, ROWS = 45, TW = W / COLS, TH = H / ROWS;
 const speedInput = document.getElementById('speed');
 const speedVal = document.getElementById('speedVal');
@@ -14,14 +14,8 @@ speedInput.addEventListener('input', e => {
   speedVal.textContent = speed.toFixed(1) + '×';
 });
 
-document.querySelectorAll('[data-mode-btn]').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('[data-mode-btn]').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    document.body.dataset.mode = b.dataset.modeBtn;
-  });
-});
-const finishMode = () => document.body.dataset.mode || 'trace'; // trace=sketch+colour, reveal=sketch only, sketch=photo only
+// Sketch-only experience: real images/maps are sources, only the pencil sketch is shown.
+const finishMode = () => 'reveal';
 
 // visible error trap: if anything throws, show it in the status line so it can be reported
 window.addEventListener('error', e => {
@@ -136,18 +130,6 @@ class ExactSketch {
   }
   async play(pctEl, name) {
     const my = ++this.playId;
-    const mode = finishMode();
-    if (mode === 'sketch') { // photo only
-      try {
-        const { sketch, color } = await this.prepare();
-        if (my !== this.playId) return;
-        this.vctx.drawImage(color, 0, 0);
-        this.wrap.classList.add('drawn');
-        if (pctEl) pctEl.textContent = 'photo ✓';
-        pencil.style.opacity = '0';
-        return;
-      } catch { return this.fallback(pctEl); }
-    }
     let lib;
     try { lib = await this.prepare(); }
     catch { return this.fallback(pctEl); }
@@ -157,10 +139,9 @@ class ExactSketch {
     const order = tileOrder();
     const total = order.length;
     let done = 0;
-    const colourPhase = mode === 'trace';
     if (pctEl) pctEl.textContent = '✏️ sketching… 0%';
-    tourLabel.textContent = `✏️ pencil sketching ${name} — the exact photo…`;
-    // Phase 1: pencil sketch tiles
+    tourLabel.textContent = `✏️ pencil sketching ${name}…`;
+    // Pencil sketch tiles — the sketch is the final experience, no colour/photo reveal
     await new Promise(res => {
       const step = () => {
         if (my !== this.playId) return res();
@@ -170,48 +151,21 @@ class ExactSketch {
           this.vctx.drawImage(lib.sketch, t.tx * TW, t.ty * TH, TW + 0.5, TH + 0.5, t.tx * TW, t.ty * TH, TW + 0.5, TH + 0.5);
           if (k === n - 1) pencilTo(this.canvas, t.tx * TW + TW / 2, t.ty * TH + TH / 2, '✏️');
         }
-        if (pctEl) pctEl.textContent = colourPhase
-          ? `✏️ sketching… ${Math.round(done / total * 60)}%`
-          : `✏️ sketching… ${Math.round(done / total * 100)}%`;
+        if (pctEl) pctEl.textContent = `✏️ sketching… ${Math.round(done / total * 100)}%`;
         if (done < total) requestAnimationFrame(step); else res();
       };
       step();
     });
     if (my !== this.playId) return;
-    if (!colourPhase) {
-      this.wrap.classList.add('drawn');
-      if (pctEl) pctEl.textContent = 'pencil ✓';
-      pencil.style.opacity = '0';
-      tourLabel.textContent = `${name} — pencil sketch complete (exact photo, hand-shaded).`;
-      return;
-    }
-    // Phase 2: colour it in, same pencil path order
-    if (pctEl) pctEl.textContent = '🖌️ colouring… 60%';
-    tourLabel.textContent = `🖌️ sketch done — now colouring ${name} in…`;
-    let c = 0;
-    await new Promise(res => {
-      const step = () => {
-        if (my !== this.playId) return res();
-        const n = Math.max(4, Math.round(16 * speed));
-        for (let k = 0; k < n && c < total; k++, c++) {
-          const t = order[c];
-          this.vctx.drawImage(lib.color, t.tx * TW, t.ty * TH, TW + 0.5, TH + 0.5, t.tx * TW, t.ty * TH, TW + 0.5, TH + 0.5);
-          if (k === n - 1) pencilTo(this.canvas, t.tx * TW + TW / 2, t.ty * TH + TH / 2, '🖌️');
-        }
-        if (pctEl) pctEl.textContent = `🖌️ colouring… ${Math.round(60 + c / total * 40)}%`;
-        if (c < total) requestAnimationFrame(step); else res();
-      };
-      step();
-    });
-    if (my !== this.playId) return;
     this.wrap.classList.add('drawn');
-    if (pctEl) pctEl.textContent = 'done ✓';
+    if (pctEl) pctEl.textContent = 'pencil ✓';
     pencil.style.opacity = '0';
-    tourLabel.textContent = `${name} — exact photo, drawn then coloured.`;
+    tourLabel.textContent = `${name} — pencil sketch complete.`;
   }
-  fallback(pctEl) { // canvas blocked: show photo directly
-    this.wrap.classList.add('drawn', 'photo-fallback');
-    if (pctEl) pctEl.textContent = 'photo ✓';
+  fallback(pctEl) { // never reveal the real image: stay on paper with a message
+    this.wrap.classList.remove('drawn');
+    this.paper();
+    if (pctEl) pctEl.textContent = 'sketch unavailable';
   }
   stop() { this.playId++; pencil.style.opacity = '0'; }
 }
@@ -229,13 +183,13 @@ function drawCard(card, { scroll = false } = {}) {
   if (scroll) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
   const wrap = card.querySelector('.sketch-wrap');
   const pctEl = card.querySelector('.pct span');
-  const name = card.querySelector('h2')?.textContent || 'photo';
-  if (pctEl) pctEl.textContent = 'loading photo…';
+  const name = card.querySelector('h2')?.textContent || 'sketch';
+  if (pctEl) pctEl.textContent = 'loading sketch…';
   // small delay after scroll so the pencil starts on-screen
   return new Promise(res => setTimeout(res, scroll ? 450 : 0))
     .then(() => getSketch(wrap).play(pctEl, name))
     .catch(err => {
-      if (pctEl) pctEl.textContent = 'photo unavailable';
+      if (pctEl) pctEl.textContent = 'sketch unavailable';
       tourLabel.textContent = '⚠️ ' + err.message;
     });
 }
@@ -316,7 +270,7 @@ async function playChapter() {
   if (thIndex < chrono.length - 1) { thIndex++; playChapter(); }
   else {
     thPlaying = false; thPlay.textContent = '↻ Replay story';
-    tourLabel.textContent = 'Chronological story complete — every exact photo, drawn. Vote below 👇';
+    tourLabel.textContent = 'Story complete — every sketch, drawn. Vote below 👇';
     setTimeout(() => tourProgress.style.width = '0%', 1800);
   }
 }
@@ -343,6 +297,74 @@ const io = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.3 });
 cards.forEach(c => io.observe(c));
+
+// ---- Hand-drawn Zimbabwe map: real map source, sketch-only tile reveal (same as sites) ----
+const mapCard = document.getElementById('mapCard');
+const mapWrap = document.getElementById('mapWrap');
+const mapStatus = document.getElementById('mapStatus');
+const mapReplay = document.getElementById('mapReplay');
+const mapPins = [...document.querySelectorAll('.map-pin')];
+const mapLegendItems = [...document.querySelectorAll('#mapLegend li')];
+let mapToken = 0;
+
+function mapGoto(id) {
+  const card = document.getElementById(id);
+  if (card) drawCard(card, { scroll: true });
+}
+
+mapPins.forEach(d => d.addEventListener('click', e => { e.stopPropagation(); mapGoto(d.dataset.target); }));
+document.querySelectorAll('[data-goto]').forEach(b => {
+  b.addEventListener('click', () => mapGoto(b.dataset.goto));
+});
+
+function setPinsVisible(on) {
+  mapPins.forEach(p => p.classList.toggle('on', on));
+  mapLegendItems.forEach(li => li.classList.toggle('on', on));
+}
+
+async function playMap() {
+  if (!mapCard || !mapWrap) return;
+  const my = ++mapToken;
+  setPinsVisible(false);
+  mapCard.classList.remove('map-drawn');
+  if (mapStatus) mapStatus.textContent = 'loading map…';
+  try {
+    await getSketch(mapWrap).play(mapStatus, 'Zimbabwe');
+  } catch { /* status already set by play() */ }
+  if (my !== mapToken) return;
+  mapCard.classList.add('map-drawn');
+  if (mapStatus) mapStatus.textContent = 'dropping pins ①→⑥…';
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for (let i = 0; i < mapPins.length; i++) {
+    if (my !== mapToken) return;
+    mapPins[i].classList.add('on');
+    mapLegendItems[i]?.classList.add('on');
+    if (!reduced) await new Promise(r => setTimeout(r, 220 / speed));
+  }
+  if (my !== mapToken) return;
+  if (mapStatus) mapStatus.textContent = 'pencil ✓ — tap a pin';
+}
+
+if (mapWrap) {
+  mapWrap.addEventListener('click', e => {
+    if (e.target.closest('.map-pin') || e.target.closest('#mapReplay')) return;
+    playMap();
+  });
+}
+if (mapReplay) mapReplay.addEventListener('click', e => { e.stopPropagation(); playMap(); });
+if (mapCard && 'IntersectionObserver' in window) {
+  const mapIO = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting && !mapCard.dataset.drawn && !theater.classList.contains('open')) {
+        mapCard.dataset.drawn = '1';
+        setTimeout(playMap, 350);
+      }
+    });
+  }, { threshold: 0.3 });
+  mapIO.observe(mapCard);
+} else if (mapCard) {
+  playMap();
+}
 
 // votes
 const voteRow = document.getElementById('voteRow');
