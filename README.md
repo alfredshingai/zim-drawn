@@ -42,6 +42,22 @@ All sketches are generated client-side; sources stay hidden (`canvas.draw` is th
 
 - **Vercel only**: `vercel.json` (cleanUrls, immutable images). Connect GitHub repo `alfredshingai/zim-drawn` → auto-deploy on push to `main`. Enable Web Analytics: Dashboard → https://vercel.com/alfredo1805/zim-drawn/analytics → Enable → redeploy; verify Network tab shows `/_vercel/insights/view`.
 
+### Local Development Environment (Vercel)
+
+Per https://vercel.com/docs/deployments/environments#local-development-environment — for local parity with Preview/Production:
+
+```bash
+npm i -g vercel   # or bun/yarn/pnpm i -g vercel
+vercel link       # link C:\Users\Administrator\Documents\index (or this folder) to alfredo1805/zim-drawn
+vercel env pull   # pulls env vars into .env.local (no vars needed for this static site, but keeps workflow)
+vercel dev        # runs at http://localhost:3000 with Vercel's edge routing (alternative to python3 serve.py 8000)
+```
+
+No build, no env vars required; static files (`index.html`, `images/`, `favicon.*`, `googleb85b8d8b0da644ad.html`) are served as-is. The Local env mirrors Production for analytics/debug.
+
+Verification: `googleb85b8d8b0da644ad.html` (root, `google-site-verification: googleb85b8d8b0da644ad.html`) is committed for Google Search Console — served at `https://zim-drawn.vercel.app/googleb85b8d8b0da644ad.html` and `https://alfredshingai.github.io/zim-drawn/googleb85b8d8b0da644ad.html` if GH Pages were used.
+
+
 ## UX notes
 
 - `images/hwange.jpg` is now landscape 1072×804 (herd at pan) not portrait — corrects 4:3 `coverData` crop.
